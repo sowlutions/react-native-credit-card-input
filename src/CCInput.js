@@ -46,36 +46,52 @@ export default class CCInput extends Component {
     containerStyle: {},
     inputStyle: {},
     labelStyle: {},
-    onFocus: () => {},
-    onChange: () => {},
-    onBecomeEmpty: () => {},
-    onBecomeValid: () => {},
+    onFocus: () => { },
+    onChange: () => { },
+    onBecomeEmpty: () => { },
+    onBecomeValid: () => { },
     additionalInputProps: {},
   };
 
-  componentWillReceiveProps = newProps => {
-    const { status, value, onBecomeEmpty, onBecomeValid, field } = this.props;
-    const { status: newStatus, value: newValue } = newProps;
+  state = {
+    focused: false
+  }
+
+  componentDidUpdate(prevProps) {
+    const { status, value, onBecomeEmpty, onBecomeValid, field } = prevProps;
+    const { status: newStatus, value: newValue } = this.props;
 
     if (value !== "" && newValue === "") onBecomeEmpty(field);
     if (status !== "valid" && newStatus === "valid") onBecomeValid(field);
-  };
+
+  }
 
   focus = () => this.refs.input.focus();
 
-  _onFocus = () => this.props.onFocus(this.props.field);
+  _onFocus = () => {
+    this.setState({ focused: true })
+    this.props.onFocus(this.props.field)
+  }
+
+  _onBlur = () => {
+    this.setState({ focused: false })
+  }
+
   _onChange = value => this.props.onChange(this.props.field, value);
 
   render() {
+    const { focused } = this.state
     const { label, value, placeholder, status, keyboardType,
-            containerStyle, inputStyle, labelStyle,
-            validColor, invalidColor, placeholderColor,
-            additionalInputProps } = this.props;
+      containerStyle, inputStyle, labelStyle,
+      validColor, invalidColor, placeholderColor,
+      additionalInputProps } = this.props;
     return (
       <TouchableOpacity onPress={this.focus}
         activeOpacity={0.99}>
         <View style={[containerStyle]}>
-          { !!label && <Text style={[labelStyle]}>{label}</Text>}
+          <Text style={[labelStyle, focused && { color: '#1273FF' }]}>
+            {!!label && (value !== '' || focused) ? label : ''}
+          </Text>
           <TextInput ref="input"
             {...additionalInputProps}
             keyboardType={keyboardType}
@@ -85,14 +101,15 @@ export default class CCInput extends Component {
               s.baseInputStyle,
               inputStyle,
               ((validColor && status === "valid") ? { color: validColor } :
-              (invalidColor && status === "invalid") ? { color: invalidColor } :
-              {}),
+                (invalidColor && status === "invalid") ? { color: invalidColor } :
+                  {}),
             ]}
             underlineColorAndroid={"transparent"}
             placeholderTextColor={placeholderColor}
             placeholder={placeholder}
             value={value}
             onFocus={this._onFocus}
+            onBlur={this._onBlur}
             onChangeText={this._onChange} />
         </View>
       </TouchableOpacity>
