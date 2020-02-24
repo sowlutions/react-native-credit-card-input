@@ -124,6 +124,7 @@ export default class LiteCreditCardInput extends Component {
       values,
       status,
       onFocus,
+      onBlur,
       onChange,
       onBecomeEmpty,
       onBecomeValid,
@@ -139,7 +140,7 @@ export default class LiteCreditCardInput extends Component {
       value: values[field],
       status: status[field],
 
-      onFocus, onChange, onBecomeEmpty, onBecomeValid,
+      onFocus, onBlur, onChange, onBecomeEmpty, onBecomeValid,
       additionalInputProps: additionalInputsProps[field],
     };
   };
@@ -163,6 +164,7 @@ export default class LiteCreditCardInput extends Component {
       values,
       status,
       onFocus,
+      onBlur,
       onChange,
       onBecomeEmpty,
       onBecomeValid,
@@ -180,7 +182,7 @@ export default class LiteCreditCardInput extends Component {
       value: values[field],
       status: status[field],
 
-      onFocus, onChange, onBecomeEmpty, onBecomeValid,
+      onFocus, onBlur, onChange, onBecomeEmpty, onBecomeValid,
 
       additionalInputProps: additionalInputsProps[field],
     };

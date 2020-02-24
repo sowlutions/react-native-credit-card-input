@@ -33,6 +33,7 @@ export default class CCInput extends Component {
     placeholderColor: PropTypes.string,
 
     onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
     onChange: PropTypes.func,
     onBecomeEmpty: PropTypes.func,
     onBecomeValid: PropTypes.func,
@@ -47,6 +48,7 @@ export default class CCInput extends Component {
     inputStyle: {},
     labelStyle: {},
     onFocus: () => { },
+    onBlur: () => { },
     onChange: () => { },
     onBecomeEmpty: () => { },
     onBecomeValid: () => { },
@@ -75,6 +77,7 @@ export default class CCInput extends Component {
 
   _onBlur = () => {
     this.setState({ focused: false })
+    this.props.onBlur(this.props.field)
   }
 
   _onChange = value => this.props.onChange(this.props.field, value);
